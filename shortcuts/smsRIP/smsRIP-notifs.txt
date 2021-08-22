@@ -1,0 +1,1 @@
+{"00003":"Tip: Try running smsRIP on another device alongside this one to increase smsRIP’s fire power!"}

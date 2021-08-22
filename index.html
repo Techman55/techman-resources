@@ -1,0 +1,121 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Techman's Website</title>
+		<meta name="viewport" content="width=device-width,inital-scale=1" />
+    <style>
+      * {
+        font-family: Helvetica;
+        position: relative;
+      }
+      footer {
+        width: 100%;
+        position: fixed;
+        bottom: 0;
+        height: 65px;
+        padding-left: 3000px;
+	      margin-left: -3000px;
+      }
+      @media (prefers-color-scheme: light) {
+        * {
+          color: black;
+        }
+        body {
+          /*background-color: rgb(229, 229, 234);*/
+          background-color: white;
+        }
+        footer {
+          background-color: rgb(95, 95, 95);
+        }
+      }
+      @media (prefers-color-scheme: dark) {
+        * {
+          color: white;
+        }
+        body {
+          background-color: rgb(44, 44, 46);
+        }
+        footer {
+          background-color: rgb(0, 0, 0);
+        }
+      }
+      body {
+        margin: 10px;
+        /*background: rgb(2,0,36);
+        background: -moz-linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 48%, rgba(0,212,255,1) 100%);
+        background: -webkit-linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 48%, rgba(0,212,255,1) 100%);
+        background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 48%, rgba(0,212,255,1) 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#020024",endColorstr="#00d4ff",GradientType=1);*/
+      }
+      #version {
+        text-align: right;
+        font-size: 8pt;
+        /*position: fixed;
+        bottom: 0;
+        right: 0;*/
+        margin-right: 40px;
+        display: inline-block;
+        float: right;
+      }
+			.title {
+				text-align: center;
+				color: rgb(135,206,235);
+        font-size: 30px;
+        bottom: 20px
+			}
+      .small {
+        font-size: 10pt;
+      }
+      .left {
+        text-align: left;
+        float: left;
+      }
+      .right {
+        text-align: right;
+        float: right;
+      }
+      .inline-block {
+        display: inline-block;
+      }
+      .profile-pic {
+        border-radius: 50%;
+        min-width: 50px;
+        max-width: 70px;
+      }
+      header {
+        border-bottom: 5px rgb(255, 0, 0) solid;
+        position: sticky;
+      }
+      .social {
+        position: static;
+        width: 50px;
+        bottom: 0;
+        display: inline-block;
+        margin-top: 5px;
+      }
+      .invert {
+        -webkit-filter: invert(100%); /* Safari/Chrome */
+        filter: invert(100%);
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <a><img src="https://techman55.github.io/resources/images/profile.jpeg" alt="profile_icon" class="inline-block profile-pic"></a>
+      <h1 class="title inline-block">Welcome to Techman's Website!</h1>
+    </header><br>
+
+    <main>
+		  <h3>There's nothing here just yet, but I'll add stuff soon!</h3>
+      <br>
+      <a href="https://techman55.github.io/resources"><h5>Browse Techman Resources</h5></a>
+    </main>
+
+    <footer>
+      <a href="https://github.com/Techman55"><img src="https://techman55.github.io/resources/images/logos/github_white.png" alt="Github" class="social invert"></a>
+      <a href=""><img src="" alt="" class="social"></a>
+      <a href=""><img src="" alt="" class="social"></a>
+      <p id="version">Techman Personal Site v1.0</p>
+    </footer>
+  </body>
+</html>
