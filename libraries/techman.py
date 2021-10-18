@@ -50,7 +50,7 @@ except ModuleNotFoundError:
 #Techman's python3 function Library
 class Library:
 
-	VERSION = 1.7
+	VERSION = 1.8
 	DEFAULTS = {
 		'link': 'https://resources.techmandev.com/libraries/techman.py',
 		'path': '/tmp'
@@ -96,7 +96,7 @@ class Library:
 
 		Library.download_latest(path=params['path'], link=params['link'], filename='techman_latest.py')
 		from techman_latest import Library as version_check
-		result = version_check.version
+		result = version_check.VERSION
 		del version_check
 		os.remove('{}/{}'.format(params['path'], 'techman_latest.py'))
 		return result
