@@ -1,20 +1,37 @@
-# Insert the following code into your script to use the techman library
+"""
+Techman.py Library
+	by Techman (https://techmandev.com)
+
+	Changelog (v1.7):
+		- Adjusts to follow class naming convention (CapWords)
+		- Adjusts to follow Class const naming conventions (CAPS_WITH_UNDER)
+		- Adds Functions Class
+		- techman_init v 1.5
+			- Adds fallback path (/tmp) for services like replit
+"""
+
+# Insert the following code into your script to use the techman Library
 '''
-# techman_init (ver 1.4)
+# techman_init (ver 1.5)
 import sys, os
-techman_config = {'min_ver': 1.6, 'path': '{}'.format(os.path.dirname(
+techman_config = {'min_ver': 1.7, 'path': '{}'.format(os.path.dirname(
     sys.argv[0])), 'link': 'https://resources.techmandev.com/libraries/techman.py'}  # Init params
 try:
     sys.path.append('{}/'.format(techman_config['path']))
     import techman
-    if not techman.library.is_compatible(techman_config['min_ver']):
+    if not techman.Library.is_compatible(techman_config['min_ver']):
         raise ModuleNotFoundError
 except ModuleNotFoundError:
     try:
         import requests
-        library = requests.get(techman_config['link']).text
-        with open('{}/techman.py'.format(techman_config['path']), 'w') as file:
-            file.write(library)
+        Library = requests.get(techman_config['link']).text
+        try:
+          with open('{}/techman.py'.format(techman_config['path']), 'w') as file:
+              file.write(Library)
+        except OSError:
+          techman_config['path'] = '/tmp'
+          with open('{}/techman.py'.format(techman_config['path']), 'w') as file:
+              file.write(Library)
         sys.path.append('{}/'.format(techman_config['path']))
         import techman
     except ConnectionError as error:  # Internet error
@@ -23,90 +40,90 @@ except ModuleNotFoundError:
     except PermissionError as error:  # Write permission error
         raise PermissionError('{error}: \n\nPlease confirm that you have permission to write to this directory\n\nIf all else fails, you could download the techman.py file from {link} and save it to {path}'.format(
             link=techman_config['link'], error=error, path=techman_config['path']))
-    # requests library missing (most likely) or library import error
+    # requests Library missing (most likely) or Library import error
     except ModuleNotFoundError as error:
-        raise ModuleNotFoundError('{error}: \n\nPlease confirm that you have installed the requests library with \'pip3 install requests\'\n\nIf all else fails, you could download the techman.py file from {link} and save it to {path}'.format(
+        raise ModuleNotFoundError('{error}: \n\nPlease confirm that you have installed the requests Library with \'pip3 install requests\'\n\nIf all else fails, you could download the techman.py file from {link} and save it to {path}'.format(
             link=techman_config['link'], error=error, path=techman_config['path']))
 
 '''
 
-#Techman's python3 function library
-class library:
+#Techman's python3 function Library
+class Library:
 
-	version = 1.6
-	defaults = {
+	VERSION = 1.7
+	DEFAULTS = {
 		'link': 'https://resources.techmandev.com/libraries/techman.py',
 		'path': '/tmp'
 	}
 		
-	def is_compatible(min_ver): #checks if this version of library is >= to min_ver param
-		return library.version >= min_ver
+	def is_compatible(min_ver): #checks if this version of Library is >= to min_ver param
+		return Library.VERSION >= min_ver
 
-	def download_latest(**params): # download_latest('filename'='techman.py','link'='http://...') Downloads the latest copy of the library from the server and replaces the old one
-		from techman import library
+	def download_latest(**params): # download_latest('filename'='techman.py','link'='http://...') Downloads the latest copy of the Library from the server and replaces the old one
+		from techman import Library
 		if params.get('config') is not None:
 			params['link'] = params['config']['link']
 			params['path'] = params['config']['path']
 		else:
 			if params.get('path') is None:
-				params['path'] = library.defaults['path']
+				params['path'] = Library.DEFAULTS['path']
 			if params.get('link') is None:
-				params['link'] = library.defaults['link']
+				params['link'] = Library.DEFAULTS['link']
 		if params.get('filename') is None:
 			params['filename'] = 'techman.py'
 
 		try:
 			import requests, sys, os
-			library = requests.get(params['link']).text
+			Library = requests.get(params['link']).text
 			with open('{}/{}'.format(params['path'], params['filename']), 'w') as file:
-				file.write(library)
+				file.write(Library)
 		except ConnectionError as error: #Internet error
 			raise ConnectionError('{error}: \n\nPlease check your connection'.format(link=params['link'], error=error))
-		except ModuleNotFoundError as error: #requests library missing (most likely) or library import error
-			raise ModuleNotFoundError('{error}: \n\nPlease confirm that you have installed the requests library with \'pip3 install requests\''.format(link=params['link'], error=error))
+		except ModuleNotFoundError as error: #requests Library missing (most likely) or Library import error
+			raise ModuleNotFoundError('{error}: \n\nPlease confirm that you have installed the requests Library with \'pip3 install requests\''.format(link=params['link'], error=error))
 
 	def latest_version(**params): # latest_version('link'='https://..')
-		from techman import library
+		from techman import Library
 		import os, sys
 		if params.get('config') is not None:
 			params['link'] = params['config']['link']
 			params['path'] = params['config']['path']
 		else:
 			if params.get('path') is None:
-				params['path'] = library.defaults['path']
+				params['path'] = Library.DEFAULTS['path']
 			if params.get('link') is None:
-				params['link'] = library.defaults['link']
+				params['link'] = Library.DEFAULTS['link']
 
-		library.download_latest(path=params['path'], link=params['link'], filename='techman_latest.py')
-		from techman_latest import library as version_check
+		Library.download_latest(path=params['path'], link=params['link'], filename='techman_latest.py')
+		from techman_latest import Library as version_check
 		result = version_check.version
 		del version_check
 		os.remove('{}/{}'.format(params['path'], 'techman_latest.py'))
 		return result
 		
-	def check_for_update(**params): #check_for_update('current_ver'=1.0, 'link'='http://..', 'update'=True) Checks if an update is avalible, and if 'update' param is True, will attempt to update the library
-		from techman import library
+	def check_for_update(**params): #check_for_update('current_ver'=1.0, 'link'='http://..', 'update'=True) Checks if an update is available, and if 'update' param is True, will attempt to update the Library
+		from techman import Library
 		import os, sys
 		if params.get('config') is not None:
 			params['link'] = params['config']['link']
 			params['path'] = params['config']['path']
 		else:
 			if params.get('path') is None:
-				params['path'] = library.defaults['path']
+				params['path'] = Library.DEFAULTS['path']
 			if params.get('link') is None:
-				params['link'] = library.defaults['link']
+				params['link'] = Library.DEFAULTS['link']
 		if params.get('current_ver') is None:
-			params['current_ver'] = library.version
+			params['current_ver'] = Library.VERSION
 		if params.get('update') is None:
 			params['update'] = False
 
-		if (library.latest_version(link=params['link'], path=params['path']) <=
+		if (Library.latest_version(link=params['link'], path=params['path']) <=
 		    params['current_ver']):
 			return False
 
 		if params['update']:
 			import importlib, techman
-			library.download_latest(link=params['link'], path=params['path'])
+			Library.download_latest(link=params['link'], path=params['path'])
 			importlib.reload(techman)
 			return True
 
@@ -121,10 +138,10 @@ class yn:
 		elif response in no_list:
 			return False
 		else:
-			print('Invaild Option, use {yes} or {no}\n'.format(yes=yes_list[0], no=no_list[0]))
+			print('Invalid Option, use {yes} or {no}\n'.format(yes=yes_list[0], no=no_list[0]))
 			return yn.ask(prompt, yes_list, no_list)
 
-	#yn.check => Takes in a string and returns True for "yes" and False for "no" based on string, also returns None for invaild option (Syntax: yn.ask('yes'))
+	#yn.check => Takes in a string and returns True for "yes" and False for "no" based on string, also returns None for invalid option (Syntax: yn.ask('yes'))
 	def check(string, yes_list = ["yes","y", '1'], no_list = ['no', 'y', '0']):
 		string = string.lower()
 		if string in yes_list:
@@ -135,19 +152,19 @@ class yn:
 			return None
 
 
-class quicksetup:
+class QuickSetup:
 	
 	import os, sys
-	defaults = {
+	DEFAULTS = {
 		'path': '{}'.format(os.path.dirname(sys.argv[0]))
 	}
 
 	def is_first_open(name, **params):
-		from techman import quicksetup
+		from techman import QuickSetup
 		if params.get('message') is None:
 			params['message'] = None
 		if params.get('path') is None:
-			params['path'] = quicksetup.defaults['path']
+			params['path'] = QuickSetup.DEFAULTS['path']
 
 		try:
 			open("{}/.{}.cashe".format(params['path'], name), "r").close()
@@ -160,9 +177,9 @@ class quicksetup:
 			return True
 		
 	def reset_first_open(name, **params):
-		from techman import quicksetup
+		from techman import QuickSetup
 		if params.get('path') is None:
-			params['path'] = quicksetup.defaults['path']
+			params['path'] = QuickSetup.DEFAULTS['path']
 
 		import os
 		try:
@@ -172,9 +189,9 @@ class quicksetup:
 			return False
 
 	def does_config_exist(name, **params):
-		from techman import quicksetup
+		from techman import QuickSetup
 		if params.get('path') == None:
-			params['path'] = quicksetup.defaults['path']
+			params['path'] = QuickSetup.DEFAULTS['path']
 		if params.get('key_to_check') == None:
 			params['key_to_check'] = None
 
@@ -194,9 +211,9 @@ class quicksetup:
 			return False
 
 	def write_config(name, config, **params):
-		from techman import quicksetup
+		from techman import QuickSetup
 		if params.get('path') is None:
-			params['path'] = quicksetup.defaults['path']
+			params['path'] = QuickSetup.DEFAULTS['path']
 
 		import json
 		try:
@@ -207,33 +224,33 @@ class quicksetup:
 			return None
 
 	def read_config(name, **params):
-		from techman import quicksetup
+		from techman import QuickSetup
 		if params.get('path') is None:
-			params['path'] = quicksetup.defaults['path']
+			params['path'] = QuickSetup.DEFAULTS['path']
 
 		import json
-		if quicksetup.does_config_exist(name, path=params['path']):
+		if QuickSetup.does_config_exist(name, path=params['path']):
 			with open("{}/.{}.config".format(params['path'], name), 'r') as file:
 				return json.loads(file.read().replace('\'', '\"'))
 		else:
 			return None
 
 	def update_config(name, new_values, **params):
-		from techman import quicksetup
+		from techman import QuickSetup
 		if params.get('path') is None:
-			params['path'] = quicksetup.defaults['path']
+			params['path'] = QuickSetup.DEFAULTS['path']
 
-		if quicksetup.does_config_exist(name, path=params['path']):
-			config = quicksetup.read_config(name, path=params['path'])
+		if QuickSetup.does_config_exist(name, path=params['path']):
+			config = QuickSetup.read_config(name, path=params['path'])
 		else:
 			config = {}
 		config.update(new_values)
-		return quicksetup.write_config(name, config, path=params['path'])
+		return QuickSetup.write_config(name, config, path=params['path'])
 
 	def reset_config(name, **params):
-		from techman import quicksetup
+		from techman import QuickSetup
 		if params.get('path') is None:
-			params['path'] = quicksetup.defaults['path']
+			params['path'] = QuickSetup.DEFAULTS['path']
 
 		import os
 		try:
@@ -241,3 +258,50 @@ class quicksetup:
 			return True
 		except FileNotFoundError:
 			return False
+
+class Functions:
+
+	def set_clipboard(value):
+		try:
+			import clipboard
+			module = 'clipboard'
+		except ModuleNotFoundError:
+			try:
+				import pyperclip
+				module = 'pyperclip'
+			except ModuleNotFoundError:
+				if yn.ask('To enable clipboard functionality, please install pyperclip with \'pip3 install pyperclip\'. Would you like to run this program without clipboard functionality?'):
+					module = None
+				else:
+					exit()
+		if module == 'clipboard':
+			clipboard.set(value)
+		elif module is not None:
+			pyperclip.copy(value)
+
+#Backwards Compatibility
+class library:
+	version = Library.VERSION
+	defaults = Library.DEFAULTS	
+	def is_compatible(min_ver): #checks if this version of Library is >= to min_ver param
+		return Library.is_compatible(min_ver)
+	def download_latest(**params): # download_latest('filename'='techman.py','link'='http://...') Downloads the latest copy of the Library from the server and replaces the old one
+		return Library.download_latest(**params)
+	def latest_version(**params): # latest_version('link'='https://..')
+		return Library.latest_version(**params)	
+	def check_for_update(**params): #check_for_update('current_ver'=1.0, 'link'='http://..', 'update'=True) Checks if an update is available, and if 'update' param is True, will attempt to update the Library
+		return Library.check_for_update(**params)
+class quicksetup:
+	defaults = QuickSetup.DEFAULTS
+	def is_first_open(name, **params):
+		QuickSetup.is_first_open(name, **params)
+	def reset_first_open(name, **params):
+		QuickSetup.reset_first_open(name, **params)
+	def write_config(name, config, **params):
+		QuickSetup.write_config(name, config, **params)
+	def read_config(name, **params):
+		QuickSetup.read_config(name, **params)
+	def update_config(name, new_values, **params):
+		QuickSetup.update_config(name, new_values, **params)
+	def reset_config(name, **params):
+		QuickSetup.reset_config(name, **params)
