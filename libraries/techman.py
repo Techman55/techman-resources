@@ -2,12 +2,8 @@
 Techman.py Library
 	by Techman (https://techmandev.com)
 
-	Changelog (v1.7):
-		- Adjusts to follow class naming convention (CapWords)
-		- Adjusts to follow Class const naming conventions (CAPS_WITH_UNDER)
-		- Adds Functions Class
-		- techman_init v 1.5
-			- Adds fallback path (/tmp) for services like replit
+	Changelog (v1.9):
+		- Adds Packages class for installing from pip within a script and checking if script installed
 """
 
 # Insert the following code into your script to use the techman Library
@@ -50,7 +46,7 @@ except ModuleNotFoundError:
 #Techman's python3 function Library
 class Library:
 
-	VERSION = 1.8
+	VERSION = 1.9
 	DEFAULTS = {
 		'link': 'https://resources.techmandev.com/libraries/techman.py',
 		'path': '/tmp'
@@ -278,6 +274,40 @@ class Functions:
 			clipboard.set(value)
 		elif module is not None:
 			pyperclip.copy(value)
+
+class Packages:
+				
+	def is_package_installed(module):
+		import sys, importlib.util
+		print(importlib.util.find_spec(module))
+		if module in sys.modules:
+			return True
+		elif importlib.util.find_spec(module) is not None:
+			return True
+		else:
+			return False
+				
+	def install(module, **params):
+		import subprocess, sys, techman
+		if not techman.Packages.is_package_installed(module):
+			try:
+				if params.get('pip_v') is not None:
+					subprocess.check_call([params['pip_v'], "install", module])
+				else:
+					try:
+						subprocess.check_call([sys.executable, "-m", "pip", "install", module])
+					except:
+						try:
+							subprocess.check_call(["pip3", "install", module])
+						except:
+							subprocess.check_call(["pip", "install", module])
+			except:
+				print('Failed to install dependency "{m}", please install it manually with "pip3 install {m}"'.format(m=module))
+				exit()
+			finally:
+				return True
+		else:
+			return True
 
 #Backwards Compatibility
 class library:
