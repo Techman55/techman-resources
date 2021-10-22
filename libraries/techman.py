@@ -46,7 +46,7 @@ except ModuleNotFoundError:
 #Techman's python3 function Library
 class Library:
 
-	VERSION = 1.9
+	VERSION = 1.10
 	DEFAULTS = {
 		'link': 'https://resources.techmandev.com/libraries/techman.py',
 		'path': '/tmp'
@@ -279,7 +279,6 @@ class Packages:
 				
 	def is_package_installed(module):
 		import sys, importlib.util
-		print(importlib.util.find_spec(module))
 		if module in sys.modules:
 			return True
 		elif importlib.util.find_spec(module) is not None:
