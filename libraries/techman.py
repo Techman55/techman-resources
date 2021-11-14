@@ -46,7 +46,7 @@ except ModuleNotFoundError:
 #Techman's python3 function Library
 class Library:
 
-	VERSION = 1.11
+	VERSION = 1.12
 	DEFAULTS = {
 		'link': 'https://resources.techmandev.com/libraries/techman.py',
 		'path': '/tmp'
@@ -272,6 +272,7 @@ class Functions:
 					return False
 				else:
 					module = 'pyperclip'
+					import pyperclip
 		if module == 'clipboard':
 			clipboard.set(value)
 			return True
