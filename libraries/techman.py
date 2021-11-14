@@ -46,7 +46,7 @@ except ModuleNotFoundError:
 #Techman's python3 function Library
 class Library:
 
-	VERSION = 1.10
+	VERSION = 1.11
 	DEFAULTS = {
 		'link': 'https://resources.techmandev.com/libraries/techman.py',
 		'path': '/tmp'
@@ -257,7 +257,7 @@ class QuickSetup:
 
 class Functions:
 
-	def set_clipboard(value):
+	def set_clipboard(value, *args):
 		try:
 			import clipboard
 			module = 'clipboard'
@@ -266,14 +266,18 @@ class Functions:
 				import pyperclip
 				module = 'pyperclip'
 			except ModuleNotFoundError:
-				if yn.ask('To enable clipboard functionality, please install pyperclip with \'pip3 install pyperclip\'. Would you like to run this program without clipboard functionality?'):
+				import techman
+				if techman.Packages.install('pyperclip') == False:
 					module = None
+					return False
 				else:
-					exit()
+					module = 'pyperclip'
 		if module == 'clipboard':
 			clipboard.set(value)
+			return True
 		elif module is not None:
 			pyperclip.copy(value)
+			return True
 
 class Packages:
 				
@@ -302,7 +306,7 @@ class Packages:
 							subprocess.check_call(["pip", "install", module])
 			except:
 				print('Failed to install dependency "{m}", please install it manually with "pip3 install {m}"'.format(m=module))
-				exit()
+				return False
 			finally:
 				return True
 		else:
